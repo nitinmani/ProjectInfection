@@ -7,7 +7,8 @@
 #### A brief overview of each function is given at the end of this documentation.
 
 ### How To Run 
-  * Compile all the files in the `src` directory. 
+ * Note: You will need Java 7 or higher in order to run this project. 
+  * Compile all the files in the `src` directory OR . 
   * Then run this command: `java Infecter txtFile`, where `txtFile` is a relative path to file of users. Each line of that file should be formatted as such:  
    * [UserID],[Version],[StudentId1],[StudentId2],...,[StudentIdN]
    * The above line signifies that a user with `UserID` uses version `Version`, and coaches students with student Ids `StudentId1` to `StudentIdN`
@@ -20,7 +21,7 @@
 * This is a slightly modified DFS algorithm, but essentially iterates through the connected component the user belongs to and infects everyone in it.
 
 #### Limited Infection
-* I decided that it is imperative to maintain the condition that everyone in the connected component of a user should have the same version, so there will be no connected componenents where users within a connected component use different versions of the website.
+* I decided that it is imperative to maintain the condition that everyone in the connected component of a user should have the same version, so there will be no connected componenents where users within a connected component use different versions of the website. If a student is coached by two different people, for instance, and they use different versions to teach, that negatively impacts the student's learning. So, this is a condition that I was not going to compromise on.
 * I interpretted Limited Infection as an infection which if the user inputs `numToInfect` number of users and a tolerance `tolerance`,  the algorithm will succeed (an infect the users) only if it can infect anywhere from `numToInfect - tolerance` to `numToInfect + tolerance` number of users, maintaining the condition stated in the first bullet point. Limited infection will fail if it cannot find a group of connected components that meet that requirement.
 * To implement this algorithm, I coded up a slightly modified (and optimized) version of the knapsack algorithm.
 
