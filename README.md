@@ -3,8 +3,8 @@
 ## Contact Information
 * Nitin Manivasagan <nitinmani@berkeley.edu>
 
-#### Detailed documentation for all three tasks is in the pdf. Please look through the pdf for a detailed explanation of how I have implemented the different types of infections. 
-#### However, a brief overview is given at the end of this documentation.
+#### Detailed documentation for all three tasks is in the pdf. Please look through the `InfectionDocumentation.pdf` for a detailed explanation of how I have implemented the different types of infections. 
+#### A brief overview of each function is given at the end of this documentation.
 
 ### How To Run 
   * Compile all the files. 
