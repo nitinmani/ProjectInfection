@@ -3,12 +3,12 @@
 ## Contact Information
 * Nitin Manivasagan <nitinmani@berkeley.edu>
 
-#### Detailed documentation for all three tasks is in the pdf. Please look through the pdf for a detailed explanation of how I have implemented the different types of infections. 
-#### However, a brief overview is given at the end of this documentation.
+#### Detailed documentation for all three tasks is in the pdf. Please look through the `InfectionDocumentation.pdf` for a detailed explanation of how I have implemented the different types of infections. 
+#### A brief overview of each function is given at the end of this documentation.
 
 ### How To Run 
-  * Compile all the files. 
-  * Then run this command `java Infecter txtFile`, where each line of txtFile is of the format:  
+  * Compile all the files in the `src` folder. 
+  * Then run this command `java Infecter txtFile`, where `txtFile` is a relative path to file of users. Each line of that file should be formatted as such:  
    * [UserID][Version][StudentId1][StudentId2]...[StudentIdN]
   * All of the ids must be long values
   * After doing so, you will get prompted with the type of infection you want to perform, and depending on the infection, you will get prompted with other needed information. It should be very self explanatory once you type in the command, on what you will need to input.
