@@ -15,13 +15,13 @@
   * I have added a folder with sample files that you can use to test the algorithm
  
 #### Total Infection
-* This is a slightly modified DFS algorithm, but essentially iterates through the connecte component of the user and infects everyone in it.
+* This is a slightly modified DFS algorithm, but essentially iterates through the connected component the user belongs to and infects everyone in it.
 
 #### Limited Infection
 * I interpretted Limited Infection as an infection where if the user inputs `numToInfect` number of users and a tolerance `tolerance`,  the algorithm will succeed only if it can infect anywhere from `numToInfect - tolerance` to `numToInfect + tolerance` number of users. 
 * To do this, I implemented a slightly modified version of the knapsack algorithm.
 
 #### Exact Infection
-* Exact Infection is the exact same as Limited Infection with `tolerance` equal to 0.
+* Exact Infection is the same as Limited Infection with `tolerance` equal to 0.
 
 ###### Note: For testing, I created sample user files and ran each one manually, using many different commands to test the algorithms. Some of these files are in the `sample_user_data` file
