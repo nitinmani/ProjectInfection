@@ -51,9 +51,10 @@ public class InfectionInputHelper {
 		}
 		
 		String version = null;
-		// Get the next token (this is the version)  // TODO:  Can we remove this input?
+		// Get the next token (this is the version) 
 		if ( strTok.hasMoreTokens() ) {
 			version = strTok.nextToken().trim();  // Second token is version
+			inf.addVersionToUser(Long.valueOf(coachId), version);
 		} else {
 			// The line has only one token.  This user may be an independent user.
 			inf.addIndependentUser(Long.valueOf(coachId));
@@ -64,6 +65,7 @@ public class InfectionInputHelper {
 			String studentId = strTok.nextToken().trim();
 			// Add student to coach relationship
 			inf.addStudentToCoach(Long.valueOf(studentId), Long.valueOf(coachId));
+			inf.addVersionToUser(Long.valueOf(studentId), version);
 			// Add this student to the students list for this coach
 			students.add(Long.valueOf(studentId));
 		}

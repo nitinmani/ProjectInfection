@@ -4,13 +4,8 @@
  * Class to calculate infections for a given input set.
  *
  */
-import java.util.HashMap;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.ArrayList;
-import java.util.Stack;
+import java.io.*;
+import java.util.*;
 
 public class Infecter {
 	private String fileName;  // Input file name is stored for reset purpose
@@ -21,6 +16,9 @@ public class Infecter {
 	
 	// This HashMap stores Student to Coach Relationships (coachedBy relationship)
 	private HashMap<Long, HashSet<Long>> studentToCoachesMap = new HashMap<Long, HashSet<Long>>();
+
+	// This HashMap stores the user id and the version number that the user id uses
+	private HashMap<Long, String> idToVersion = new HashMap<Long, String>();
 	
 	private HashSet<Long> independentUsers = new HashSet<Long>();
 	
@@ -89,6 +87,29 @@ public class Infecter {
 		this.studentToCoachesMap.put(studentId, currCoaches);
 	}
 
+	/**
+	 * Add a version to the idToUser map
+	 * @param userId, version
+	 */
+	public void addVersionToUser(Long userId, String version) {
+		if ( idToVersion.containsKey(userId) ) {
+			return;  // The user is not an independent user
+		} else {
+		    idToVersion.put(userId, version);	
+		}
+	}
+
+	/**
+	 * Add a user to the idToUser map
+	 * @param userId, version
+	 */
+	public void changeUserVersion(Long userId, String version) {
+		if( idToVersion.containsKey(userId)) {
+			idToVersion.remove(userId);
+			idToVersion.put(userId, version);
+		} 
+	}
+
 	public void addCoachToStudent(Long coachId, HashSet<Long> students) {
 		if ( coachId == null || students == null ){
 			return;  // Invalid input
@@ -109,7 +130,7 @@ public class Infecter {
 		this.coachToStudentsMap.put(coachId, currStudentsForCoach);
 	}
 	
-	public Partition total_infection(Long userId, String version, boolean removeProcessed){
+	public Partition[] total_infection(Long userId, String version, boolean removeProcessed){
 		if ( userId == null ){
 			return null;  // Partition (or subgraph can't be created using null user
 		}
@@ -120,7 +141,9 @@ public class Infecter {
 			//this.independentUsers.remove(userId);
 			Partition p = new Partition(version);
 			p.addUser(userId);
-			return p;
+			Partition[] pArr = new Partition[1];
+			pArr[0] = p;
+			return pArr;
 		}
 		
 		HashSet<Long> inf_set = new HashSet<Long>();
@@ -187,7 +210,9 @@ public class Infecter {
 		// Create a new Partition
 		Partition p = new Partition(version);
 		p.addUsers(inf_set);
-		return p;
+		Partition[] pArr = new Partition[1];
+		pArr[0] = p;
+		return pArr;
 	}
 	
 	private void createAllPartitions(){
@@ -195,7 +220,8 @@ public class Infecter {
 		Set<Long> keys = this.coachToStudentsMap.keySet();
         while ( keys.size() > 0) {
         	Long[] userIds = keys.toArray(new Long[1]);
-        	Partition p = total_infection(userIds[0], "1.0", true);
+        	Partition[] pArr = total_infection(userIds[0], "1.0", true);
+        	Partition p = pArr[0];
         	if ( p != null ){
         		this.allPartitions.add(p);
         	}
@@ -206,7 +232,8 @@ public class Infecter {
         keys = this.studentToCoachesMap.keySet();
         while ( keys.size() > 0) {
         	Long[] userIds = keys.toArray(new Long[1]);
-        	Partition p = total_infection(userIds[0], "1.0", true);
+        	Partition[] pArr = total_infection(userIds[0], "1.0", true);
+        	Partition p = pArr[0];
         	if ( p != null ){
         		this.allPartitions.add(p);
         	}
@@ -216,7 +243,8 @@ public class Infecter {
         // Create partitions for individuals
         Iterator<Long> iter = this.independentUsers.iterator();
         while (iter.hasNext()){
-        	this.allPartitions.add(this.total_infection(iter.next(), "1.0", true));
+        	Partition[] pArr = this.total_infection(iter.next(), "1.0", true);
+        	this.allPartitions.add(pArr[0]);
         }
         sortAllPartitionsDesc();
     }
@@ -346,74 +374,132 @@ public class Infecter {
 		return limited_infection(n, 0, version);
 	}
 	
-	public static void main(String args[]){
-		Infecter infecter = new Infecter("users.txt");
-		System.out.println("____________________________________________");
-		
-		Partition p1 = infecter.total_infection(new Long(5), "2.0", false);
-		System.out.println("total_infection(5) " + p1);
-		
-		System.out.println("____________________________________________");
+	public void printMaps() {
+		for(Long id : coachToStudentsMap.keySet()) {
+			String users = null;
+			HashSet<Long> students = coachToStudentsMap.get(id);
+			if(students != null && students.size() > 0) {
+				users = "";
+				for(Long student : students) {
+					if(student != null) {
+						users += student;
+						users += ", ";
+					}
+				}
+				users = users.substring(0, users.length() - 2);
+			}
+			if(users == null) {
+				System.out.println("Coach id " + id + " teaches no students");
+			} else {
+				System.out.println("For coach id " + id + " the students are " + users);
+			}
+		}
+		System.out.println("\n User to Version");
+		for(Long id : idToVersion.keySet()) {
+			System.out.println("User id " + id + " is using version " + idToVersion.get(id));
+		}
+	}
 
-		Partition p2 = infecter.total_infection(new Long(31), "2.0", false);
-		System.out.println("total_infection(31) " + p2);
-		
-		System.out.println("____________________________________________");
-		
-		Partition[] pArr = infecter.limited_infection(5, 1, "2.0");
-		System.out.println("limited_infection(5,1)");
-		if(pArr != null) {
-			for(Partition pElem : pArr)
-				System.out.println("The Users using: " + pElem);
+	public static void main(String args[]){
+		Infecter infecter = new Infecter(args[0]);
+		String response = "Y";
+		Partition[] partitions = null;
+		Scanner sc = new Scanner(System.in);
+		String v = null;
+		while(response.equalsIgnoreCase("Y")) {
+			System.out.println("Please choose the type of infection to perform: total, limited, exact\n");
+			String infection = sc.nextLine();
+			while(!infection.equalsIgnoreCase("total") && !infection.equalsIgnoreCase("limited") && !infection.equalsIgnoreCase("exact")) {
+				System.out.println("Please input a valid function\n");
+				infection = sc.nextLine();
+			}
+			System.out.println();
+			infecter.printMaps();
+			if(infection.equalsIgnoreCase("total")) {
+				System.out.println("\n------------Total Infection------------\n");
+				System.out.println();
+				System.out.println("Give the id of the initial user to infect\n");
+				String idAsString = sc.nextLine();
+				long id = Long.parseLong(idAsString);
+				boolean exists = false;
+				while(exists == false) {
+					for(Long elem : infecter.independentUsers) {
+						if(elem == id) {
+							exists = true;
+						}
+					}
+					if(exists == false) {
+						for(Long elem : infecter.coachToStudentsMap.keySet()) {
+							if(elem == id) {
+								exists = true;
+							}
+						}
+					}
+					if(exists == false) {
+						for(Long elem : infecter.studentToCoachesMap.keySet()) {
+							if(elem == id) {
+								exists = true;
+							}
+						}
+					}
+					if(exists == false) {
+						System.out.println("That user id is not in our system. Please input a valid id\n");
+						id = Long.parseLong(sc.nextLine());
+					}
+				}
+				System.out.println("\nGive the new version you want to push out\n");
+				String version = sc.nextLine();
+				v = version;
+				partitions = infecter.total_infection(id, version, true);
+
+			} else if(infection.equalsIgnoreCase("limited")) {
+				System.out.println("\n------------Limited Infection------------\n");
+				System.out.println();
+				System.out.println("\nGive the number of users to infect\n");
+				String num = sc.nextLine();
+				int numToInfect = Integer.parseInt(num);
+				System.out.println("\nGive the tolerance\n");
+				String tol = sc.nextLine();
+				int tolerance = Integer.parseInt(tol);
+				System.out.println("\nGive the new version you want to push out\n");
+				String version = sc.nextLine();
+				v = version;
+				partitions = infecter.limited_infection(numToInfect, tolerance, version);
+
+			} else {
+				System.out.println("\n------------Exact Infection------------\n");
+				System.out.println();
+				System.out.println("\nGive the number of users to infect\n");
+				String num = sc.nextLine();
+				int numToInfect = Integer.parseInt(num);
+				System.out.println("\nGive the new version you want to push out\n");
+				String version = sc.nextLine();
+				v = version;
+				partitions = infecter.exact_infection(numToInfect, version);
+			} 
+			if(partitions != null && partitions.length > 0) {
+				int count = 0;
+				System.out.println("\n---------Infected--------\n");
+				for(Partition p : partitions) {
+					count += p.getSize();
+					for(Long userId : p.getUsers()) {
+						infecter.changeUserVersion(userId, v);
+					} 
+					System.out.println(p.toString());
+				}
+
+				System.out.println("\nA total of: " + count + " users were infected\n");
+			} else {
+				System.out.println("\nNo users were infected\n");
+			}
+
+			System.out.println("Do you want to continue infecting [Y/N]?\n");
+			response = sc.nextLine();
+			while(!response.equalsIgnoreCase("Y") && !response.equalsIgnoreCase("N")) {
+				System.out.println("Please input either 'Y' or 'N'");
+				response = sc.nextLine();
+			}
 		}
-		System.out.println("____________________________________________");
-		
-		Partition p3 = infecter.total_infection(new Long(36), "2.0", false);
-		System.out.println("total_infection(36) " + p3);
-		System.out.println("____________________________________________");
-		
-		pArr = infecter.limited_infection(12, 1, "2.0");
-		System.out.println("limited_infection(12,1)");
-		if(pArr != null) {
-			for(Partition pElem : pArr)
-				System.out.println("The Users using: " + pElem);
-		}
-		System.out.println("____________________________________________");
-		
-		pArr = infecter.limited_infection(5, 0, "2.0");
-		System.out.println("limited_infection(5,0)");
-		if(pArr != null) {
-			for(Partition pElem : pArr)
-				System.out.println("The Users using: " + pElem);
-		}
-		System.out.println("____________________________________________");
-		
-		pArr = infecter.limited_infection(3, 0, "2.0");
-		System.out.println("limited_infection(3,0)");
-		if(pArr != null) {
-			for(Partition pElem : pArr)
-				System.out.println("The Users using: " + pElem);
-		}
-		System.out.println("____________________________________________");
-		
-		Partition p4 = infecter.total_infection(new Long(27), "2.0", false);
-		System.out.println("total_infection(27) " + p4);
-		System.out.println("____________________________________________");
-		
-		pArr = infecter.limited_infection(1, 1, "2.0");
-		System.out.println("limited_infection(1,1)");
-		if(pArr != null) {
-			for(Partition pElem : pArr)
-				System.out.println("The Users using: " + pElem);
-		}
-		System.out.println("____________________________________________");
-		
-		pArr = infecter.limited_infection(4, 1, "2.0");
-		System.out.println("limited_infection(4,1)");
-		if(pArr != null) {
-			for(Partition pElem : pArr)
-				System.out.println("The Users using: " + pElem);
-		}
-		System.out.println("____________________________________________");
+		return;	
 	}
 }

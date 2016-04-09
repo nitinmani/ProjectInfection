@@ -25,6 +25,10 @@ public class Partition {
 		return this.users.size();
 	}
 	
+	public HashSet<Long> getUsers() {
+		return this.users;
+	}
+	
 	public String getVersion(){
 		return this.usingVersion;
 	}
