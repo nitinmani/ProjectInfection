@@ -7,7 +7,7 @@
 #### A brief overview of each function is given at the end of this documentation.
 
 ### How To Run 
-  * Compile all the files. 
+  * Compile all the files in the `src` folder. 
   * Then run this command `java Infecter txtFile`, where each line of txtFile is of the format:  
    * [UserID][Version][StudentId1][StudentId2]...[StudentIdN]
   * All of the ids must be long values
