@@ -17,7 +17,7 @@ public class InfectionInputHelper {
 		BufferedReader br = null;
 		String line;
 		File file = new File(fileName);
-		System.out.println("File at: " + file.getAbsolutePath());
+		
 		try {
 			br = new BufferedReader(new FileReader(file));
 			

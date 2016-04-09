@@ -375,25 +375,6 @@ public class Infecter {
 	}
 	
 	public void printMaps() {
-		for(Long id : coachToStudentsMap.keySet()) {
-			String users = null;
-			HashSet<Long> students = coachToStudentsMap.get(id);
-			if(students != null && students.size() > 0) {
-				users = "";
-				for(Long student : students) {
-					if(student != null) {
-						users += student;
-						users += ", ";
-					}
-				}
-				users = users.substring(0, users.length() - 2);
-			}
-			if(users == null) {
-				System.out.println("Coach id " + id + " teaches no students");
-			} else {
-				System.out.println("For coach id " + id + " the students are " + users);
-			}
-		}
 		System.out.println("\n User to Version");
 		for(Long id : idToVersion.keySet()) {
 			System.out.println("User id " + id + " is using version " + idToVersion.get(id));
