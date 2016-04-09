@@ -7,12 +7,7 @@ import java.util.StringTokenizer;
 import java.util.HashSet;
 
 public class InfectionInputHelper {
-	/**
-	 * 
-	 * @param theFileName - Name of the file containing the input
-	 * 
-	 * This file parses the input file and creates the necessary relationship maps
-	 */
+	
 	public static void parseInput(Infecter theInf, String fileName) throws IOException{
 		BufferedReader br = null;
 		String line;
@@ -33,11 +28,6 @@ public class InfectionInputHelper {
 		}
 	}
 
-	/**
-	 * This method parses a line and adds the necessary objects to the Infection class.
-	 * @param inf
-	 * @param inStr
-	 */
 	private static void parseLineAndAdd(Infecter inf, String inStr){
 		StringTokenizer strTok = new StringTokenizer(inStr, ",", false);
 		
