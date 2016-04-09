@@ -7,7 +7,7 @@
 #### A brief overview of each function is given at the end of this documentation.
 
 ### How To Run 
-  * Compile all the files in the `src` folder. 
+  * Compile all the files in the `src` directory. 
   * Then run this command `java Infecter txtFile`, where `txtFile` is a relative path to file of users. Each line of that file should be formatted as such:  
    * [UserID],[Version],[StudentId1],[StudentId2],...,[StudentIdN]
   * All of the ids must be long values
