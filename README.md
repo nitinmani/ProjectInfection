@@ -24,4 +24,4 @@
 #### Exact Infection
 * Exact Infection is the same as Limited Infection with `tolerance` equal to 0.
 
-###### Note: For testing, I created sample user files and ran each one manually, using many different commands to test the algorithms. Some of these files are in the `sample_user_data` file
+###### Note: For testing, I created sample user files and ran each one manually, using many different commands to test the algorithms. Some of these files are in the `sample_user_data` directory.
