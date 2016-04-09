@@ -50,10 +50,6 @@ public class Infecter {
 		// System.out.println("No of Elements in studentsMap " + this.studentToCoachesMap.size() + "\n" + studentToCoachesMap);
 	}
 
-	/**
-	 * Adds an independent user to the system after checking
-	 * @param userId
-	 */
 	public void addIndependentUser(Long userId) {
 		// See if this user is really an independent user
 		if ( coachToStudentsMap.containsKey(userId) || studentToCoachesMap.containsKey(userId) ) {
@@ -63,11 +59,6 @@ public class Infecter {
 		}
 	}
 
-	/**
-	 * Adds student-coach relationship.  Takes care of removing them from independent users, if present.
-	 * @param studentId
-	 * @param coachId
-	 */
 	public void addStudentToCoach(Long studentId, Long coachId) {
 		if ( coachId == null ){
 			return;  // Invalid input.
@@ -87,10 +78,6 @@ public class Infecter {
 		this.studentToCoachesMap.put(studentId, currCoaches);
 	}
 
-	/**
-	 * Add a version to the idToUser map
-	 * @param userId, version
-	 */
 	public void addVersionToUser(Long userId, String version) {
 		if ( idToVersion.containsKey(userId) ) {
 			return;  // The user is not an independent user
@@ -99,10 +86,6 @@ public class Infecter {
 		}
 	}
 
-	/**
-	 * Add a user to the idToUser map
-	 * @param userId, version
-	 */
 	public void changeUserVersion(Long userId, String version) {
 		if( idToVersion.containsKey(userId)) {
 			idToVersion.remove(userId);
@@ -278,15 +261,6 @@ public class Infecter {
 		return parts;
 	}
 	
-	/**
-	 * Recursive method to calculate partitions
-	 * @param totalReq
-	 * @param tolerance
-	 * @param remReq
-	 * @param parts
-	 * @param solStack
-	 * @return
-	 */
 	private boolean findPartitions(long totalReq, int tolerance, long remRequired, ArrayList<Partition> parts, 
 			                       Stack<Partition> solStack){
 		// First check if the partitions have enough users to cover the required number of users
@@ -323,11 +297,6 @@ public class Infecter {
 		return temp;
 	}
 
-	/**
-	 * Calculates the total number of users in the solution stack.
-	 * @param solutionStack
-	 * @return
-	 */
 	private long calculateTotal(Stack<Partition> solutionStack){
 		if (solutionStack.isEmpty()) return 0;
 		int noOfParts = solutionStack.size();
@@ -338,11 +307,6 @@ public class Infecter {
 		return sum;
 	}
 	
-	/**
-	 * Checks if the Partitions list has enough number of users to meet the required size
-	 * @param parts
-	 * @return
-	 */
 	private boolean haveEnoughUsers(ArrayList<Partition> parts, long reqSize){
 		long sum = 0;
 		int noOfParts = parts.size();
