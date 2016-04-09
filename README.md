@@ -8,7 +8,7 @@
 
 ### How To Run 
  * Note: You will need Java 7 or higher in order to run this project. 
-  * Compile all the files in the `src` directory OR . 
+  * Compile all the files in the `src` directory OR simply go to the `run` directory. 
   * Then run this command: `java Infecter txtFile`, where `txtFile` is a relative path to file of users. Each line of that file should be formatted as such:  
    * [UserID],[Version],[StudentId1],[StudentId2],...,[StudentIdN]
    * The above line signifies that a user with `UserID` uses version `Version`, and coaches students with student Ids `StudentId1` to `StudentIdN`
