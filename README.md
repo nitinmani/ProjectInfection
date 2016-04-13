@@ -10,10 +10,10 @@
  * Note: You will need Java 7 or higher in order to run this project. 
   * Compile all the files in the `src` directory OR simply go to the `run` directory. 
   * Then run this command: `java Infecter txtFile`, where `txtFile` is a relative path to file of users. Each line of that file should be formatted as such:  
-   * [UserID],[Version],[StudentId1],[StudentId2],...,[StudentIdN]
-   * The above line signifies that a user with `UserID` uses version `Version`, and coaches students with student Ids `StudentId1` to `StudentIdN`
-   * Obviously, this means that all the students operate on the same version, and I am reasonably making the assumption that there will be no inconsisties in the input file which cause the students to operate on a different version.
-   * I am also assuming that all of the ids are long values
+    * [UserID],[Version],[StudentId1],[StudentId2],...,[StudentIdN]
+    * The above line signifies that a user with `UserID` uses version `Version`, and coaches students with student Ids `StudentId1` to `StudentIdN`
+    * Obviously, this means that all the students operate on the same version, and I am reasonably making the assumption that there will be no inconsistencies in the input file which cause the students to operate on a different version.
+    * I am also assuming that all of the ids are long values
   * After running the command, you will get prompted with the type of infection you want to perform, and depending on the infection, you will get prompted with other needed information. It should be very self explanatory once you type in the command, on what you will need to input.
   * I have added a folder with sample files that you can use to test the algorithm
  
